@@ -1,5 +1,5 @@
 from decimal import Decimal
-
+from django.db.models import Avg
 from django.db import models
 
 #Basic model for other models
@@ -36,6 +36,9 @@ class Product(BasicModel):
 
     def __str__(self):
         return self.name
+
+    def average_rating(self):
+        return self.comments.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
 
     @property
     def has_discount(self) -> bool:
